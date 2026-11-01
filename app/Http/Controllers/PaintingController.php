@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Painting;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class PaintingController extends Controller
 {
@@ -28,7 +32,7 @@ class PaintingController extends Controller
 
         // Если загружено изображение, сохраняем его в storage/app/public/paintings
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('paintings', 'public');
+       $data['image'] = $this->saveImage($request->file('image'));
         } else {
             unset($data['image']);
         }
@@ -57,7 +61,7 @@ class PaintingController extends Controller
 
         // Если выбран новый файл, заменяем изображение
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('paintings', 'public');
+$data['image'] = $this->saveImage($request->file('image'));
         } else {
             unset($data['image']); // иначе остаётся старое изображение
         }
@@ -73,6 +77,18 @@ class PaintingController extends Controller
         $painting->delete();
 
         return redirect()->route('paintings.index')->with('success', 'Картина удалена');
+    }
+        // Изменение размера изображения под вёрстку (600×400) и сохранение
+    private function saveImage(UploadedFile $file): string
+    {
+        $manager = new ImageManager(new Driver());
+        $image = $manager->read($file->getRealPath());
+        $image->cover(600, 400); // обрезка и масштабирование под карточку
+
+        $path = 'paintings/' . uniqid() . '.jpg';
+        Storage::disk('public')->put($path, (string) $image->toJpeg(85));
+
+        return $path;
     }
 
     // Правила валидации, общие для store и update
