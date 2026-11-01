@@ -1,0 +1,58 @@
+@use "sass:color";
+
+// ===== Bootstrap (SASS-исходники, только нужные модули) =====
+@import "bootstrap/scss/functions";
+@import "variables";
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap/scss/utilities/api";
+
+// ===== Миксин из ЛР №1: тема карточки по яркости фона =====
+@mixin generate-card-theme($bg-color) {
+  --bs-card-bg: #{$bg-color};
+
+  @if color.channel($bg-color, "lightness", $space: hsl) < 50% {
+    --bs-card-color: #ecf0f1;
+    --bs-card-title-color: #ffffff;
+  } @else {
+    --bs-card-color: #{$main-text-color};
+    --bs-card-title-color: #1a252f;
+  }
+}
+
+// ===== Шапка =====
+.navbar {
+  .logo { font-size: 2.2rem; line-height: 1; }
+  .site-name { font-size: 1.6rem; font-weight: 700; color: $main-text-color; }
+}
+
+.page-main-title { color: $main-text-color; }
+
+// ===== Карточки =====
+.painting-card {
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s;
+  &:hover { transform: translateY(-5px); }
+
+  .card-img-top {
+    height: 240px;
+    object-fit: cover;
+  }
+
+  .card-text { font-size: 0.85rem; line-height: 1.4; }
+}
+
+// Цикл из ЛР №1: каждая карточка темнее предыдущей на 8%
+@for $i from 1 through 5 {
+  .gallery-grid > .col:nth-child(#{$i}) .card {
+    $calculated-bg: color.adjust($card-base-bg, $lightness: (1 - $i) * 8%);
+    @include generate-card-theme($calculated-bg);
+  }
+}
+
+// ===== Подвал =====
+.gallery-footer {
+  border-top: 1px solid #dcdde1;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}

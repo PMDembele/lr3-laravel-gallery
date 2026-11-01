@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'АртГалерея')</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
-<body class="bg-light">
+<body>
 <div class="container py-4">
-    <nav class="navbar bg-white shadow-sm rounded mb-4 px-3">
-        <a class="navbar-brand" href="{{ route('paintings.index') }}">🎨 АртГалерея</a>
-        <a class="btn btn-primary" href="{{ route('paintings.create') }}">Добавить</a>
+    <nav class="navbar navbar-expand-md bg-white shadow-sm rounded mb-4 px-3">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('paintings.index') }}">
+            <span class="logo">🎨</span>
+            <span class="site-name">АртГалерея</span>
+        </a>
+        <a class="btn btn-primary ms-auto" href="{{ route('paintings.create') }}">Добавить</a>
     </nav>
 
     @if (session('success'))
@@ -19,5 +22,6 @@
 
     @yield('content')
 </div>
+<script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>
