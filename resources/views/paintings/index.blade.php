@@ -17,8 +17,8 @@
                         <strong>Год:</strong> {{ $painting->year }}
                     </p>
                 </div>
-                <div class="card-footer bg-transparent border-0 d-flex gap-2 px-3 pb-3 pt-0">
-                    <a href="{{ route('paintings.show', $painting) }}" class="btn btn-outline-primary btn-sm">Подробнее</a>
+<div class="card-footer bg-transparent border-0 d-flex flex-wrap gap-2 px-3 pb-3 pt-0">
+</div>                    <a href="{{ route('paintings.show', $painting) }}" class="btn btn-outline-primary btn-sm">Подробнее</a>
                     <a href="{{ route('paintings.edit', $painting) }}" class="btn btn-outline-secondary btn-sm">Изменить</a>
                     <form action="{{ route('paintings.destroy', $painting) }}" method="POST" onsubmit="return confirm('Удалить картину?')">
                         @csrf
